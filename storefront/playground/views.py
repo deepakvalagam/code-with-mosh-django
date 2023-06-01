@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.db.models import Q, F
+from django.core.exceptions import ObjectDoesNotExist
+from store.models import Product, Customer, Collection, Order, OrderItem
 
 
 def calculate():
@@ -9,5 +12,5 @@ def calculate():
 
 
 def say_hello(request):
-    x = calculate()
-    return render(request, 'hello.html', {'name': 'Mosh'})
+    queryset = Product.objects.all().order_by('-unit_price','title')[:5]
+    return render(request, 'hello.html', {'products': list(queryset)})
