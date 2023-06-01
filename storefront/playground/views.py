@@ -12,5 +12,5 @@ def calculate():
 
 
 def say_hello(request):
-    queryset = Product.objects.all().order_by('-unit_price','title')[:5]
-    return render(request, 'hello.html', {'products': list(queryset)})
+    queryset = Order.objects.select_related('customer').prefetch_related('orderitem_set','orderitem_set__product').order_by('-placed_at').all()[:5]
+    return render(request, 'hello.html', {'orders': list(queryset)})
